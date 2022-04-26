@@ -14,14 +14,21 @@ const Home = ({ contract }) => {
     const [marketItems, setMarketItems] = useState(null)
     const [loading, setLoading] = useState(true)
     const loadMarketItems = async () => {
-        console.log('setLoading called...')
         // get all unsold items
         const results = await contract.getAllUnsoldTokens()
         const marketItems = await Promise.all(results.map(async i => {
             const uri = await contract.tokenURI(i.tokenId) // get uri from contract
             const response = await fetch(uri + ".json")
             const metadata = await response.json()
-            const identicon = `data:image/png;base64,${new Identicon(metadata.name + metadata.price, 330).toString()}`
+            var options = {
+                foreground: [0, 0, 0, (255 - i.tokenId)],               // rgba black
+                background: [255, 255, 255, 255],         // rgba white
+                margin: 0.2,                              // 20% margin
+                size: 420,                                // px square
+                format: 'png'                             // use SVG instead of PNG
+              };
+            const identicon = `data:image/png;base64,${new Identicon(metadata.name + metadata.price, options).toString()}`
+            metadata.audio = 'https://'+metadata.audio   // add prefix to complete url
             // and return them
             return ({
                 price: i.price,
@@ -68,12 +75,8 @@ const Home = ({ contract }) => {
     useEffect(callback) executes when this component updates 
     (each time  the stateful vars change or component melts) */ 
     useEffect ( () => {
-        console.log(audioRef)
-        // console.log(audioRef.current.play)
-        
         if (isPlaying) {
             console.log(audioRef)
-            audioRef.current.baseURI = 'https://'
             audioRef.current.play()
         } else if (isPlaying != null) {
             audioRef.current.pause()
@@ -83,21 +86,22 @@ const Home = ({ contract }) => {
         !marketItems && loadMarketItems()   // only load when component mounts (if value is null)
     })
     
-    /* ___ HTML ___    */
+    /* ___ Return HTML ___    */
     if (loading) return (
+        // ___ loading message ___
         <main style={{ padding: "1rem 0"}}>
             <h2>Loading ....</h2>
         </main>
     );
     return (
-        // ___ home page ___
+        // ___ page elements ___
         <div className="container-fluid mt-5">
             {marketItems.length > 0 ?
                 <div className="row">
                     <main role="main" className="col-lg-12 mx-auto" style={{ maxwidth: '500px'}} >
                         <div className="content mx-auto">
                             <audio src={marketItems[currentItemIndex].audio} ref={audioRef} ></audio>
-                            <Card>
+                            <Card style={{ maxWidth: '30rem' }}>
                                 <Card.Header> {currentItemIndex + 1} of {marketItems.length} </Card.Header>
                                 <Card.Img variant="top" src={marketItems[currentItemIndex].identicon}/>
                                 <Card.Body color="secondary">

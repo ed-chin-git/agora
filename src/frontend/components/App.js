@@ -58,9 +58,9 @@ function App() {
                 <Navbar.Toggle aria-controls="responsive-navbar-nav" />
                 <Navbar.Collapse id="responsive-navbar-nav">
                   <Nav className="me-auto">
-                    <Nav.Link as={Link} to="/">Home</Nav.Link>
-                    <Nav.Link as={Link} to="/my-tokens">My Tokens</Nav.Link>
-                    <Nav.Link as={Link} to="/my-resales">My Resales</Nav.Link>
+                    <Nav.Link as={Link} to="/">Buy Music</Nav.Link>
+                    <Nav.Link as={Link} to="/my-tokens">My Library</Nav.Link>
+                    <Nav.Link as={Link} to="/my-resales">My Listings</Nav.Link>
                   </Nav>
                   <Nav>
                     {account ? (

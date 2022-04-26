@@ -23,6 +23,7 @@ import logo from "./logo.png";
 // react page components
 import Home from "./Home.js";
 import MyTokens from "./MyTokens.js"
+import MyResales from "./MyTokens.js"
 
 function App() {
     //   __ stateful vars (global scope) ___
@@ -51,7 +52,7 @@ function App() {
           <>
             <Navbar expand="lg" bg="secondary" variant="dark">
               <Container>
-                <Navbar.Brand href="/">
+                <Navbar.Brand href="">
                   <img src={logo} width="40" height="40" className="" alt="" />
                   &nbsp; Midnight Owl
                 </Navbar.Brand>
@@ -93,13 +94,13 @@ function App() {
               <Routes>
                 <Route path='/' element={
                   <Home contract={contract} />
-                } />
+                }/>
                 <Route path='/my-tokens'  element={
                   <MyTokens contract={contract} />
-                }
-                />
-
-                <Route path='/my-resales' />
+                }/>
+                <Route path='/my-resales'  element={
+                  <MyResales contract={contract} />
+                }/>
               </Routes>
             )}
           </div>

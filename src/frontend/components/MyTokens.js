@@ -3,9 +3,9 @@ import { useState,
            useRef } from "react";
 import { ethers } from "ethers";
 import Identicon from 'identicon.js'
-import { ButtonGroup, Button, Card } from "react-bootstrap";
+import { ButtonGroup, Button, Card, Form, InputGroup } from "react-bootstrap";
 
-/* Home page component  (pass in smart contract) */
+/* webpage component  (pass in smart contract) */
 const MyTokens = ({ contract }) => {
     //  __ stateful vars __
     const audioRef = useRef(null)
@@ -13,6 +13,8 @@ const MyTokens = ({ contract }) => {
     const [currentItemIndex, setCurrentItemIndex] = useState(0)
     const [myTokens, setMyTokens] = useState(null)
     const [loading, setLoading] = useState(true)
+    const [resaleId, setResaleId] = useState(null)
+    const [resalePrice, setResalePrice] = useState(null)
     const loadMyTokens = async () => {
         // get owned items
         const results = await contract.getMyTokens()
@@ -44,11 +46,15 @@ const MyTokens = ({ contract }) => {
         setLoading(false)
     }
 
-    // /* func: buyMarketItem */
-    // const buyMarketItem = async (item) => {
-    //     await(await contract.buyToken(item.itemId, { value: item.price })).wait()
-    //     loadMarketItems()
-    // }
+    /* func: resellItem */
+    const resellItem = async (item) => {
+      if (resalePrice === "0" || item.itemId !== resaleId || !resalePrice) return 
+      // get royalty fee 
+      const fee = await contract.royaltyFee()
+      const price = ethers.utils.parseEther(resalePrice.toString())
+      await(await contract.relistToken(item.itemId, price, {value: fee})).wait()
+      loadMyTokens()
+    }
 
     /* func: skipSong  
     (true) to go forwards 
@@ -126,6 +132,23 @@ const MyTokens = ({ contract }) => {
                                         </ButtonGroup>
                                     </div>
                                 </Card.Body>
+                                <Card.Footer>
+                                  <InputGroup className="my-1">
+                                      <Button onClick={() => resellItem(myTokens[currentItemIndex])} variant='outline-primary' id='button-addon1'>
+                                        Resell
+                                      </Button>
+                                      <Form.Control
+                                        onChange={(e) => {
+                                          setResaleId(myTokens[currentItemIndex].itemId)
+                                          setResalePrice(e.target.value)
+                                        }} 
+                                        size='md'
+                                        value={resaleId === myTokens[currentItemIndex].itemId  ? resalePrice : ''}
+                                        required type="number"
+                                        placeholder="Price in ETH"
+                                      />
+                                  </InputGroup>
+                                </Card.Footer>
                             </Card>
                         </div>
                     </main>

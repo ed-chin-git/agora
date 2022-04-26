@@ -44,7 +44,7 @@ contract MidnightOwl is ERC721(tokenName, tokenSymbol) , Ownable {
                 // loop thru each price
                 for ( uint8 i = 0; i < _prices.length; i++ ) {
                     require(_prices[i] > 0, "Price must be greater than 0"); // must be valid
-                    _mint(address(this), i); // mint the collection item
+                    _mint(address(this), i); // MINT the collection item
                     marketItems.push(MarketItem(i, payable(msg.sender), _prices[i] ) ); // add it to the marketItems array
                     }
             }   

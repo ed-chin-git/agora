@@ -11,13 +11,13 @@ const Home = ({ contract }) => {
     const audioRef = useRef(null)
     const [isPlaying, setIsPlaying] = useState(null)
     const [currentItemIndex, setCurrentItemIndex] = useState(0)
-    const [marketItems, setMarketItems]  = useState(null)
+    const [marketItems, setMarketItems] = useState(null)
     const [loading, setLoading] = useState(true)
-    
     const loadMarketItems = async () => {
+        console.log('setLoading called...')
         // get all unsold items
-        const results = await contract.getAllUnsold()
-        const marketItems = await Promise.all(results.map( async i => {
+        const results = await contract.getAllUnsoldTokens()
+        const marketItems = await Promise.all(results.map(async i => {
             const uri = await contract.tokenURI(i.tokenId) // get uri from contract
             const response = await fetch(uri + ".json")
             const metadata = await response.json()
@@ -31,7 +31,7 @@ const Home = ({ contract }) => {
                 identicon
             })
         }))
-        setMarketItems(marketItems) // init the item list
+        setMarketItems(marketItems)  // init the item list
         setLoading(false)
     }
 
@@ -67,15 +67,18 @@ const Home = ({ contract }) => {
     /* ___ effects ___  
     useEffect(callback) executes when this component updates 
     (each time  the stateful vars change or component melts) */ 
-
     useEffect ( () => {
+        console.log(audioRef)
+        // console.log(audioRef.current.play)
+        
         if (isPlaying) {
+            console.log(audioRef)
+            audioRef.current.baseURI = 'https://'
             audioRef.current.play()
         } else if (isPlaying != null) {
             audioRef.current.pause()
         }
     })
-
     useEffect( () => {
         !marketItems && loadMarketItems()   // only load when component mounts (if value is null)
     })
@@ -83,7 +86,7 @@ const Home = ({ contract }) => {
     /* ___ HTML ___    */
     if (loading) return (
         <main style={{ padding: "1rem 0"}}>
-            <h2>Loading shit....</h2>
+            <h2>Loading ....</h2>
         </main>
     );
     return (
@@ -102,18 +105,17 @@ const Home = ({ contract }) => {
                                     <div className="d-grid px-4" >
                                         <ButtonGroup>
                                             <Button variant="secondary" onClick={() => skipSong(false)} >
-                                                <img src="icons8-prev-48.png" ></img>    
+                                                <img src="icons8-prev-48.png" alt='prev'></img>    
                                             </Button>
                                             <Button variant="secondary" onClick={() => setIsPlaying(!isPlaying)}>
                                                 {isPlaying ? (
-                                                    <img src="icons8-pause-48.png" ></img>    
+                                                    <img src="icons8-pause-48.png" alt='pause'></img>    
                                                 ) : (
-                                                    <img src="icons8-play-48.png" ></img>    
+                                                    <img src="icons8-play-48.png" alt='play'></img>    
                                                 )}
-                                                <img src="icons8-play-48.png" ></img>
                                             </Button>
                                             <Button variant="secondary" onClick={() => skipSong(true)} >
-                                                <img src="icons8-next-48.png" ></img>    
+                                                <img src="icons8-next-48.png" alt="next" ></img>    
                                             </Button>
                                         </ButtonGroup>
                                     </div>

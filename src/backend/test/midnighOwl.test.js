@@ -201,6 +201,23 @@ describe("UNIT TESTS : Main Smart Contract", function () {
         });
 
         it("getAllUnsoldTokens verified", async function () {
+
+            console.log('_____START______')
+            const results = await smartContract.getAllUnsoldTokens()
+            const unsold = await Promise.all(results.map(async i => {
+                const uri = await smartContract.tokenURI(i.tokenId) // get uri from contract
+                // %EDC%
+                console.log(i.tokenId, fromWei(i.price));
+  
+                // and return them
+                return ({
+                    price: i.price,
+                    itemId: i.tokenId
+                })
+            }))
+            console.log('_____END______')
+
+
             const unsoldItems = await smartContract.getAllUnsoldTokens()
             // make sure all the returned items have filtered out the sold items
             expect(unsoldItems.every(I =>!soldItems.some(j => j === I.tokenId.toNumber()))).to.equal(true)

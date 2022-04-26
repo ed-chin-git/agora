@@ -29,6 +29,13 @@ function App() {
     const [account, setAccount] = useState(null)  // store blkchain-node accounts
     const [contract, setContract] = useState({})  // store smart contract
     const [loadingStatus, setLoadingStatus] = useState(true) // set loading status true
+    const web3Handler = async () => {
+      const accounts = await window.ethereum.request({ method: 'eth_requestAccounts'}) // get blkchain node accts
+      setAccount(accounts[0])   //   set state_var to 1st node acct in list (currently connnected)
+      const provider = new ethers.providers.Web3Provider(window.ethereum) // Get web3 provider from metamask
+      const signer = provider.getSigner()   // Get the signer
+      loadContract(signer)
+    }
     // get smart contract
     const loadContract = async (signer) => {
       const curr_contract = new ethers.Contract(SmartContractAddress.address,
@@ -37,13 +44,7 @@ function App() {
       setContract(curr_contract) // store in state_var 'contract'
       setLoadingStatus(false) // done loading; set to false
     }
-    const web3Handler = async () => {
-      const accounts = await window.ethereum.request({ method: 'eth_requestAccounts'}) // get blkchain node accts
-      setAccount(accounts[0])   //   set state_var to 1st node acct in list (currently connnected)
-      const provider = new ethers.providers.Web3Provider(window.ethereum) // Get web3 provider from metamask
-      const signer = provider.getSigner()   // Get the signer
-      loadContract(signer)
-    }
+
     return (
       <BrowserRouter>
         <div className="App">

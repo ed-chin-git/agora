@@ -22,7 +22,7 @@ import logo from "./logo.png";
 
 // react page components
 import Home from "./Home.js";
-
+import MyTokens from "./MyTokens.js"
 
 function App() {
     //   __ stateful vars (global scope) ___
@@ -94,7 +94,11 @@ function App() {
                 <Route path='/' element={
                   <Home contract={contract} />
                 } />
-                <Route path='/my-tokens' />
+                <Route path='/my-tokens'  element={
+                  <MyTokens contract={contract} />
+                }
+                />
+
                 <Route path='/my-resales' />
               </Routes>
             )}

@@ -1,25 +1,26 @@
 import { useState,
         useEffect,
            useRef } from "react";
-import { ethers } from "ethers";
+// import { ethers } from "ethers";
 import Identicon from 'identicon.js'
-import { ButtonGroup, Button, Card, Form, InputGroup } from "react-bootstrap";
+import { ButtonGroup, Button, Card } from "react-bootstrap";
 
 /* webpage component  (pass in smart contract) */
-const MyResales = ({ contract }) => {
+const MyResales = ({ contract, account }) => {
     //  __ stateful vars __
     const audioRef = useRef(null)
     const [isPlaying, setIsPlaying] = useState(null)
     const [currentItemIndex, setCurrentItemIndex] = useState(0)
     const [myTokens, setMyTokens] = useState(null)
     const [loading, setLoading] = useState(true)
-    const [resaleId, setResaleId] = useState(null)
-    const [resalePrice, setResalePrice] = useState(null)
     const loadMyTokens = async () => {
         // get listed items
-        const filter = contract.filters
-        const results = await contract.getMyTokens()
+        // const filter = contract.filters
+        let filter = contract.filters.MarketItemRelisted(null, account, null)
+        let results = await contract.queryFilter(filter)
+
         const myTokens = await Promise.all(results.map(async i => {
+            i = i.args  // crashes without this ???
             const uri = await contract.tokenURI(i.tokenId) // get uri from contract
             const response = await fetch(uri + ".json")
             const metadata = await response.json()
@@ -39,22 +40,11 @@ const MyResales = ({ contract }) => {
                 name: metadata.name,
                 audio: metadata.audio,
                 identicon,
-                resellPrice: null
             }
             return (item)
         }))
         setMyTokens(myTokens)  // init the item list
         setLoading(false)
-    }
-
-    /* func: resellItem */
-    const resellItem = async (item) => {
-      if (resalePrice === "0" || item.itemId !== resaleId || !resalePrice) return 
-      // get royalty fee 
-      const fee = await contract.royaltyFee()
-      const price = ethers.utils.parseEther(resalePrice.toString())
-      await(await contract.relistToken(item.itemId, price, {value: fee})).wait()
-      loadMyTokens()
     }
 
     /* func: skipSong  
@@ -80,12 +70,11 @@ const MyResales = ({ contract }) => {
         }
     } 
 
-    /* ___ effects ___  
+    /* ___ effects hooks___  
     useEffect(callback) executes when this component updates 
     (each time  the stateful vars change or component melts) */ 
     useEffect ( () => {
         if (isPlaying) {
-            console.log(audioRef)
             audioRef.current.play()
         } else if (isPlaying != null) {
             audioRef.current.pause()
@@ -133,30 +122,13 @@ const MyResales = ({ contract }) => {
                                         </ButtonGroup>
                                     </div>
                                 </Card.Body>
-                                <Card.Footer>
-                                  <InputGroup className="my-1">
-                                      <Button onClick={() => resellItem(myTokens[currentItemIndex])} variant='outline-primary' id='button-addon1'>
-                                        Resell
-                                      </Button>
-                                      <Form.Control
-                                        onChange={(e) => {
-                                          setResaleId(myTokens[currentItemIndex].itemId)
-                                          setResalePrice(e.target.value)
-                                        }} 
-                                        size='md'
-                                        value={resaleId === myTokens[currentItemIndex].itemId  ? resalePrice : ''}
-                                        required type="number"
-                                        placeholder="Price in ETH"
-                                      />
-                                  </InputGroup>
-                                </Card.Footer>
                             </Card>
                         </div>
                     </main>
                 </div>
             : (
                 <main style={{ padding: "1rem 0"}}>
-                    <h2>No songs owned</h2>
+                    <h2>You don't have any songs listed for sale. </h2>
                 </main>
             )}
         </div>

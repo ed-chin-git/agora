@@ -23,7 +23,7 @@ import logo from "./logo.png";
 // react page components
 import Home from "./Home.js";
 import MyTokens from "./MyTokens.js"
-import MyResales from "./MyTokens.js"
+import MyResales from "./MyResales.js"
 
 function App() {
     //   __ stateful vars (global scope) ___
@@ -99,7 +99,7 @@ function App() {
                   <MyTokens contract={contract} />
                 }/>
                 <Route path='/my-resales'  element={
-                  <MyResales contract={contract} />
+                  <MyResales contract={contract} account={account} />
                 }/>
               </Routes>
             )}

@@ -8,7 +8,7 @@ import { ButtonGroup, Button, Card, Form, InputGroup } from "react-bootstrap";
 /* webpage component  (pass in smart contract) */
 const MyTokens = ({ contract }) => {
     //  __ stateful vars __
-    const audioRef = useRef(null)
+    const audioFileRef = useRef(null)
     const [isPlaying, setIsPlaying] = useState(null)
     const [currentItemIndex, setCurrentItemIndex] = useState(0)
     const [myTokens, setMyTokens] = useState(null)
@@ -84,10 +84,9 @@ const MyTokens = ({ contract }) => {
     (each time  the stateful vars change or component melts) */ 
     useEffect ( () => {
         if (isPlaying) {
-            console.log(audioRef)
-            audioRef.current.play()
+            audioFileRef.current.play()
         } else if (isPlaying != null) {
-            audioRef.current.pause()
+            audioFileRef.current.pause()
         }
     })
     useEffect( () => {
@@ -104,11 +103,12 @@ const MyTokens = ({ contract }) => {
     return (
         // ___ page elements ___
         <div className="container-fluid mt-5">
+            <h2>My Library</h2>
             {myTokens.length > 0 ?
                 <div className="row">
                     <main role="main" className="col-lg-12 mx-auto" style={{ maxwidth: '500px'}} >
                         <div className="content mx-auto">
-                            <audio src={myTokens[currentItemIndex].audio} ref={audioRef} ></audio>
+                            <audio src={myTokens[currentItemIndex].audio} ref={audioFileRef} ></audio>
                             <Card style={{ maxWidth: '30rem' }}>
                                 <Card.Header> {currentItemIndex + 1} of {myTokens.length} </Card.Header>
                                 <Card.Img variant="top" src={myTokens[currentItemIndex].identicon}/>

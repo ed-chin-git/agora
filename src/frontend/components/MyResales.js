@@ -1,25 +1,22 @@
 import { useState,
         useEffect,
            useRef } from "react";
-// import { ethers } from "ethers";
 import Identicon from 'identicon.js'
 import { ButtonGroup, Button, Card } from "react-bootstrap";
 
-/* webpage component  (pass in smart contract) */
+/* webpage component  (pass in smart contract & wallet account) */
 const MyResales = ({ contract, account }) => {
     //  __ stateful vars __
-    const audioRef = useRef(null)
+    const audioFileRef = useRef(null)
     const [isPlaying, setIsPlaying] = useState(null)
     const [currentItemIndex, setCurrentItemIndex] = useState(0)
-    const [myTokens, setMyTokens] = useState(null)
+    const [itemList, setitemList] = useState(null)
     const [loading, setLoading] = useState(true)
-    const loadMyTokens = async () => {
-        // get listed items
-        // const filter = contract.filters
+    const loaditemList = async () => {
+        // get relisted items for account from blockchain
         let filter = contract.filters.MarketItemRelisted(null, account, null)
         let results = await contract.queryFilter(filter)
-
-        const myTokens = await Promise.all(results.map(async i => {
+        const resaleList = await Promise.all(results.map(async i => {
             i = i.args  // crashes without this ???
             const uri = await contract.tokenURI(i.tokenId) // get uri from contract
             const response = await fetch(uri + ".json")
@@ -33,17 +30,17 @@ const MyResales = ({ contract, account }) => {
               };
             const identicon = `data:image/png;base64,${new Identicon(metadata.name + metadata.price, options).toString()}`
             metadata.audio = 'https://'+metadata.audio   // add prefix to complete url
-            // and return them
-            let item = {
+            // and return complete item
+            let item_List = {
                 price: i.price,
                 itemId: i.tokenId,
                 name: metadata.name,
                 audio: metadata.audio,
                 identicon,
             }
-            return (item)
+            return (item_List)
         }))
-        setMyTokens(myTokens)  // init the item list
+        setitemList(resaleList)  // init the item list
         setLoading(false)
     }
 
@@ -55,7 +52,7 @@ const MyResales = ({ contract, account }) => {
             setCurrentItemIndex( () => {
                 let index = currentItemIndex
                 index++
-                if(index > myTokens.length - 1) {
+                if(index > itemList.length - 1) {
                     index =0}
                 return index
             })
@@ -64,26 +61,26 @@ const MyResales = ({ contract, account }) => {
                 let index = currentItemIndex
                 index--
                 if(index < 0) {
-                    index = myTokens.length - 1}
+                    index = itemList.length - 1}
                 return index
             })
         }
     } 
 
-    /* ___ effects hooks___  
+    /* ___ useEffects hooks___  
     useEffect(callback) executes when this component updates 
     (each time  the stateful vars change or component melts) */ 
     useEffect ( () => {
         if (isPlaying) {
-            audioRef.current.play()
+            audioFileRef.current.play()
         } else if (isPlaying != null) {
-            audioRef.current.pause()
+            audioFileRef.current.pause()
         }
     })
     useEffect( () => {
-        !myTokens && loadMyTokens()   // only load when component mounts (if value is null)
+        !itemList && loaditemList()   // only load when component mounts (when itemList=null)
     })
-    
+
     /* ___ Return HTML ___    */
     if (loading) return (
         // ___ loading message ___
@@ -94,16 +91,17 @@ const MyResales = ({ contract, account }) => {
     return (
         // ___ page elements ___
         <div className="container-fluid mt-5">
-            {myTokens.length > 0 ?
+            <h2>My Listings</h2>
+            {itemList.length > 0 ?
                 <div className="row">
                     <main role="main" className="col-lg-12 mx-auto" style={{ maxwidth: '500px'}} >
                         <div className="content mx-auto">
-                            <audio src={myTokens[currentItemIndex].audio} ref={audioRef} ></audio>
+                            <audio src={itemList[currentItemIndex].audio} ref={audioFileRef} ></audio>
                             <Card style={{ maxWidth: '30rem' }}>
-                                <Card.Header> {currentItemIndex + 1} of {myTokens.length} </Card.Header>
-                                <Card.Img variant="top" src={myTokens[currentItemIndex].identicon}/>
+                                <Card.Header> {currentItemIndex + 1} of {itemList.length} </Card.Header>
+                                <Card.Img variant="top" src={itemList[currentItemIndex].identicon}/>
                                 <Card.Body color="secondary">
-                                    <Card.Title as="h2"> {myTokens[currentItemIndex].name}  </Card.Title>
+                                    <Card.Title as="h2"> {itemList[currentItemIndex].name}  </Card.Title>
                                     <div className="d-grid px-4" >
                                         <ButtonGroup>
                                             <Button variant="secondary" onClick={() => skipSong(false)} >

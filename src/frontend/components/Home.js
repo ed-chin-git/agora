@@ -95,6 +95,7 @@ const Home = ({ contract }) => {
     return (
         // ___ page elements ___
         <div className="container-fluid mt-5">
+            <h2>Sounds for Sale</h2>
             {marketItems.length > 0 ?
                 <div className="row">
                     <main role="main" className="col-lg-12 mx-auto" style={{ maxwidth: '500px'}} >

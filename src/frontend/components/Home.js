@@ -95,13 +95,13 @@ export default function Home ({ contract }) {
     return (
         // ___ page elements ___
         <div className="container-fluid mt-5">
-            <h2>Sounds for Sale</h2>
             {marketItems.length > 0 ?
                 <div className="row">
                     <main role="main" className="col-lg-12 mx-auto" style={{ maxwidth: '500px'}} >
                         <div className="content mx-auto">
                             <audio src={marketItems[currentItemIndex].audio} ref={audioRef} ></audio>
                             <Card style={{ maxWidth: '30rem' }}>
+                                <h2>Sounds for Sale</h2>
                                 <Card.Header> {currentItemIndex + 1} of {marketItems.length} </Card.Header>
                                 <Card.Img variant="top" src={marketItems[currentItemIndex].identicon}/>
                                 <Card.Body color="secondary">

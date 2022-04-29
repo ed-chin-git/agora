@@ -6,7 +6,7 @@ import Identicon from 'identicon.js'
 import { Button, Card, Form, InputGroup, Row, Col } from "react-bootstrap";
 
 /* webpage component  (pass in smart contract) */
-const MyTokens = ({ contract }) => {
+export default function MyTokens ({ contract }) {
     //  __ stateful vars __
     const audioFileRef = useRef([])
     const [isPlaying, setIsPlaying] = useState(null)
@@ -143,4 +143,3 @@ const MyTokens = ({ contract }) => {
         </div>
     );
 }
-export default MyTokens

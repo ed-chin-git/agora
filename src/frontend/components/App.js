@@ -50,11 +50,13 @@ function App() {
       <BrowserRouter>
         <div className="App">
           <>
-            <Navbar expand="lg" bg="secondary" variant="dark">
+            <Navbar expand="lg" bg="secondary"  variant="dark">
               <Container>
-                <Navbar.Brand href="">
-                  <img src={logo} width="40" height="40" className="" alt="" />
-                  &nbsp; Midnight Owl
+                <Navbar.Brand >
+                  <Nav.Link as={Link} to="/">
+                    <img src={logo} width="40" height="40" className="" alt="" />
+                    <Container style={{color:"orange"}}>&nbsp; Midnight Owl</Container> 
+                  </Nav.Link>    
                 </Navbar.Brand>
                 <Navbar.Toggle aria-controls="responsive-navbar-nav" />
                 <Navbar.Collapse id="responsive-navbar-nav">

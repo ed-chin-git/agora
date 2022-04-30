@@ -101,7 +101,7 @@ export default function Home ({ contract }) {
                         <div className="content mx-auto">
                             <audio src={marketItems[currentItemIndex].audio} ref={audioRef} ></audio>
                             <Card style={{ maxWidth: '30rem' }}>
-                                <h2>Sounds for Sale</h2>
+                                <h2 style={{color:'goldenrod'}}>Sounds for Sale</h2>
                                 <Card.Header> {currentItemIndex + 1} of {marketItems.length} </Card.Header>
                                 <Card.Img variant="top" src={marketItems[currentItemIndex].identicon}/>
                                 <Card.Body color="secondary">

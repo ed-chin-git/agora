@@ -1,7 +1,4 @@
-/* https://youtu.be/Q_cxytZZdnc?t=4469  */
-
 import { useState } from "react";
-import { ethers } from "ethers";
 import { 
     Link,
     BrowserRouter,
@@ -15,15 +12,17 @@ import {
     Button,
     Container
  } from "react-bootstrap";
-import SmartContractAddress from '../contractsData/MidnightOwl-address.json';
-import SmartContractAbi from '../contractsData/MidnightOwl.json';
+// __ page components __
 import './App.css';
 import logo from "./logo.png";
-
-// react page components
 import Home from "./Home.js";
 import MyTokens from "./MyTokens.js"
 import MyResales from "./MyResales.js"
+
+// __ /contractData/files created when SC is deployed to blockchain __
+import { ethers } from "ethers";
+import SmartContractAddress from '../contractsData/MidnightOwl-address.json';
+import SmartContractAbi from '../contractsData/MidnightOwl.json';
 
 function App() {
     //   __ stateful vars (global scope) ___
@@ -55,7 +54,7 @@ function App() {
                 <Navbar.Brand >
                   <Nav.Link as={Link} to="/">
                     <img src={logo} width="40" height="40" className="" alt="" />
-                    <Container style={{color:"orange"}}>&nbsp; Midnight Owl</Container> 
+                    <Nav style={{color:"orange"}}>&nbsp; Midnight Owl</Nav> 
                   </Nav.Link>    
                 </Navbar.Brand>
                 <Navbar.Toggle aria-controls="responsive-navbar-nav" />

@@ -3,20 +3,22 @@ import { useState,
            useRef } from "react";
 import { ethers } from "ethers";
 import Identicon from 'identicon.js'
-import { ButtonGroup, Button, Card } from "react-bootstrap";
+import { Button, Card, Row, Col } from "react-bootstrap";
 
-/* Home page component  (pass in smart contract) */
+/* webpage component  (pass in smart contract) */
 export default function Home ({ contract }) {
     //  __ stateful vars __
-    const audioRef = useRef(null)
+    const audioFileRef = useRef([])
     const [isPlaying, setIsPlaying] = useState(null)
-    const [currentItemIndex, setCurrentItemIndex] = useState(0)
-    const [marketItems, setMarketItems] = useState(null)
+    const [MarketList, setMarketList] = useState(null)
     const [loading, setLoading] = useState(true)
-    const loadMarketItems = async () => {
-        // get all unsold items
+    const [selected, setSelected] = useState(0)
+    const [previous, setPrevious] = useState(null)
+    const loadMarketList = async () => {
+        // get listed items from blockchain
         const results = await contract.getAllUnsoldTokens()
-        const marketItems = await Promise.all(results.map(async i => {
+        const forSaleList = await Promise.all(results.map(async i => {
+            // i = i.args  // crashes without this ???
             const uri = await contract.tokenURI(i.tokenId) // get uri from contract
             const response = await fetch(uri + ".json")
             const metadata = await response.json()
@@ -29,115 +31,94 @@ export default function Home ({ contract }) {
               };
             const identicon = `data:image/png;base64,${new Identicon(metadata.name + metadata.price, options).toString()}`
             metadata.audio = 'https://'+metadata.audio   // add prefix to complete url
-            // and return them
-            return ({
+            // and return complete item
+            let item_List = {
                 price: i.price,
                 itemId: i.tokenId,
                 name: metadata.name,
                 audio: metadata.audio,
-                identicon
-            })
+                identicon,
+            }
+            return (item_List)
         }))
-        setMarketItems(marketItems)  // init the item list
+        setMarketList(forSaleList)
         setLoading(false)
     }
 
     /* func: buyMarketItem */
     const buyMarketItem = async (item) => {
         await(await contract.buyToken(item.itemId, { value: item.price })).wait()
-        loadMarketItems()
+        loadMarketList()
     }
-
-    /* func: skipSong  
-    (true) to go forwards 
-    (false) to go backwards */
-    const skipSong = (forwards) => {
-        if (forwards) {
-            setCurrentItemIndex( () => {
-                let index = currentItemIndex
-                index++
-                if(index > marketItems.length - 1) {
-                    index =0}
-                return index
-            })
-        } else {
-            setCurrentItemIndex( () => {
-                let index = currentItemIndex
-                index--
-                if(index < 0) {
-                    index = marketItems.length - 1}
-                return index
-            })
-        }
-    } 
 
     /* ___ effects ___  
     useEffect(callback) executes when this component updates 
     (each time  the stateful vars change or component melts) */ 
     useEffect ( () => {
         if (isPlaying) {
-            audioRef.current.play()
-        } else if (isPlaying != null) {
-            audioRef.current.pause()
+            audioFileRef.current[selected].play()
+            if (selected !== previous) audioFileRef.current[previous].pause()
+        } else if (isPlaying !== null) {
+            audioFileRef.current[selected].pause()
         }
     })
     useEffect( () => {
-        !marketItems && loadMarketItems()   // only load when component mounts (if value is null)
+        !MarketList && loadMarketList()   // only load when component mounts (if value is null)
     })
     
     /* ___ Return HTML ___    */
     if (loading) return (
         // ___ loading message ___
         <main style={{ padding: "1rem 0"}}>
-            <h2>Loading ....</h2>
+            <h3>Loading songs ...</h3>
         </main>
     );
     return (
         // ___ page elements ___
-        <div className="container-fluid mt-5">
-            {marketItems.length > 0 ?
-                <div className="row">
-                    <main role="main" className="col-lg-12 mx-auto" style={{ maxwidth: '500px'}} >
-                        <div className="content mx-auto">
-                            <audio src={marketItems[currentItemIndex].audio} ref={audioRef} ></audio>
-                            <Card style={{ maxWidth: '30rem' }}>
-                                <h2 style={{color:'goldenrod'}}>Sounds for Sale</h2>
-                                <Card.Header> {currentItemIndex + 1} of {marketItems.length} </Card.Header>
-                                <Card.Img variant="top" src={marketItems[currentItemIndex].identicon}/>
+        <div className="flex justify-center">
+            <h2 variant='secondary' style={{bg:"gold"}}>Songs for Sale</h2>
+            {MarketList.length > 0 ?
+                <div className="px-5 container">
+                    <Row xs={1} md={2} lg={4} className="g-4 py-5">
+                    {MarketList.map((item, idx) => ( 
+                        <Col key={idx} className='overflow-hidden'>
+                            <audio src={item.audio} key={idx} ref={el => audioFileRef.current[idx] =el}></audio>
+                            <Card>
+                                <Card.Img variant="top" src={item.identicon}/>
                                 <Card.Body color="secondary">
-                                    <Card.Title as="h2"> {marketItems[currentItemIndex].name}  </Card.Title>
+                                    <Card.Title as="h2">{item.name}</Card.Title>
                                     <div className="d-grid px-4" >
-                                        <ButtonGroup>
-                                            <Button variant="secondary" onClick={() => skipSong(false)} >
-                                                <img src="icons8-prev-48.png" alt='prev'></img>    
-                                            </Button>
-                                            <Button variant="secondary" onClick={() => setIsPlaying(!isPlaying)}>
-                                                {isPlaying ? (
-                                                    <img src="icons8-pause-48.png" alt='pause'></img>    
-                                                ) : (
-                                                    <img src="icons8-play-48.png" alt='play'></img>    
-                                                )}
-                                            </Button>
-                                            <Button variant="secondary" onClick={() => skipSong(true)} >
-                                                <img src="icons8-next-48.png" alt="next" ></img>    
-                                            </Button>
-                                        </ButtonGroup>
+                                        <Button variant="secondary" onClick={() => {
+                                            setPrevious(selected)
+                                            setSelected(idx)
+                                            if (!isPlaying || idx === selected) setIsPlaying(!isPlaying)
+                                        }}>
+                                            { isPlaying && selected === idx ? (    
+                                                <img src="icons8-pause-48.png" alt='pause'></img>    
+                                                            ) : (
+                                                <img src="icons8-play-48.png" alt='play'></img>    
+                                        )}
+                                        </Button>
                                     </div>
+                                    <Card.Text className="mt-1">
+                                        {ethers.utils.formatEther(item.price)} ETH
+                                    </Card.Text>
                                 </Card.Body>
                                 <Card.Footer>
                                     <div className="d-grid my-1" >
-                                        <Button onClick={() => buyMarketItem(marketItems[currentItemIndex])} variant="primary" size="lg" >
-                                            {`Buy for ${ethers.utils.formatEther(marketItems[currentItemIndex].price)} ETH`}
+                                        <Button onClick={() => buyMarketItem(item)} variant="primary" size="lg" >
+                                            {`Buy for ${ethers.utils.formatEther(item.price)} ETH`}
                                         </Button>
                                     </div>
                                 </Card.Footer>
                             </Card>
-                        </div>
-                    </main>
+                        </Col>
+                    ))}
+                    </Row>
                 </div>
             : (
                 <main style={{ padding: "1rem 0"}}>
-                    <h2>No song listings</h2>
+                    <h2>No songs for sale.</h2>
                 </main>
             )}
         </div>

@@ -1,19 +1,18 @@
 /* ____ Deploy Smart Contract to Blockchain _____
-     Execute this script from application directory
+    Execute this script from application directory
             $ npm run deploy
       deploy script is defined in package.json
   NOTE: artifacts. file locations are defined in hardhat.config.js
+         deploy to rinkeby : 
+      https://www.scien.cx/2021/09/17/how-to-deploy-a-smart-contract-to-rinkeby-testnet-using-infura-and-hardhat/ 
 */
 
 const { ethers } = require("hardhat");  //  Instantiate ethers Obj (already injected into hardhat)
 
 async function main() {
-
   const smartContractName = "MidnightOwl"
-  const toWei = (num) => ethers.utils.parseEther(num.toString()) //   Wei
-  const fromWei = (num) => ethers.utils.formatEther(num)  // conversion functions
-
-
+  const toWei = (num) => ethers.utils.parseEther(num.toString())
+  
   let deployer, artist, user1, user2, users;
 /* Use the Hardhat sample accounts (displayed on spin-up)
    as follows:

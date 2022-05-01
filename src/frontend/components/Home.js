@@ -5,7 +5,7 @@ import { ethers } from "ethers";
 import Identicon from 'identicon.js'
 import { Button, Card, Row, Col } from "react-bootstrap";
 
-/* webpage component  (pass in smart contract) */
+/* Home page component  (pass in smart contract) */
 export default function Home ({ contract }) {
     //  __ stateful vars __
     const audioFileRef = useRef([])

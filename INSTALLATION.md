@@ -59,6 +59,7 @@ https://youtu.be/Q_cxytZZdnc
 + Verify deployment using hardhat console
   > $ npx hardhat console --network localhost
   >>const contract = await ethers.getContractAt(".sol contract name","smart contract address")
++ To deploy on Rinkeby testnet : https://www.scien.cx/2021/09/17/how-to-deploy-a-smart-contract-to-rinkeby-testnet-using-infura-and-hardhat/
 
  
 ## Start the Application

@@ -51,7 +51,7 @@ https://youtu.be/Q_cxytZZdnc
 ## Smart Contract development workflow
 + Modify smart contract code in Agora_contracts.sol
 + If not already there, add smart contract to deploy.js . Location is commented.
-+ Compile & deploy to executing hardhat process.
++ Compile & deploy to executing hardhat process. (deploy.js)
     > $npm run deploy
 + src/back/scripts/deploy.js contains the code for deploying the smart contract to the Hardhat blockchain node.
 + deploys using first demo wallet account 

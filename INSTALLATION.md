@@ -1,9 +1,13 @@
-# Setup (linux)
+# Setup for WSL2 ( Ubuntu )
+## verify WSL2 is running
+## Install Ubuntu from MS Store
+## documentation
 https://blog.suhailkakar.com/setup-and-build-your-first-web-3-application  
 https://medium.com/building-blocks-on-the-chain/how-to-build-a-react-dapp-with-hardhat-and-metamask-9cec8f6410d3#7c9f  
 https://medium.com/coinsbench/building-a-dapp-using-truffle-and-react-with-ci-cd-integration-aa278a207247  
 https://youtu.be/Q_cxytZZdnc  
-## Install dependencies
+
+## Install linux dependencies
 - Install nvm   NodeJS version manager
     > $ sudo apt install curl 
 
@@ -27,7 +31,7 @@ https://youtu.be/Q_cxytZZdnc
 - (if necessary) install and enable MetaMask chrome extension https://metamask.io
 
 - cd to project folder and clone this repo
-    > $ git clone https://github.com/EDC-Web3-Lab/Agora.git
+    > $ git clone https://github.com/ed-chin-git/agora.git
 
 - Install npm dependencies 
     > $ npm install

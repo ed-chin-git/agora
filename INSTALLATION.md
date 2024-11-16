@@ -56,29 +56,29 @@ https://youtu.be/Q_cxytZZdnc?si=OjOoJLPz7M25ilkc
 + Smart Contracts/Tokens must be deployed to the blockchain using deploy.js before launching the application
     > $ cd src\backend\scripts
     
-    > $npm run deploy
+    > $ npm run deploy
 + Hardhat javascript console
-    > $ npx hardhat console --network localhost
-    >& const contract = 
+    > $ npx hardhat console --network localhost  
+
 
 ## Smart Contract development workflow
 + Modify smart contract code in src/contracts/main_contract.sol
 + If not already there, add smart contract to deploy.js . Location is commented.
 + Compile & deploy to executing hardhat process. (deploy.js)
-    > $npm run deploy
+    > $ npm run deploy
 + src/back/scripts/deploy.js contains the code for deploying the smart contract to the Hardhat blockchain node.
 + deploys using first demo wallet account 
 + Note Smart contract address for next step
 + Verify deployment using hardhat console
-  > $ npx hardhat console --network localhost
-  >>const contract = await ethers.getContractAt(".sol contract name","smart contract address")
+  > $ npx hardhat console --network localhost  
+  ~>const contract = await ethers.getContractAt(".sol contract name","smart contract address")
 + To deploy on Rinkeby testnet : https://www.scien.cx/2021/09/17/how-to-deploy-a-smart-contract-to-rinkeby-testnet-using-infura-and-hardhat/
 
  
 ## Start the Application
 + NodeJS must be installed and running
 + From the application directory
-    > $npm run start
+    > $ npm run start
 ## Sample Application Data
 + IPFS  : create initial NFT metadata file(.car) from JSON metadata https://car.ipfs.io 
 + NFT.storage  : store NFT metadata in .car files. https://NFT.storage/new-file/
@@ -89,19 +89,7 @@ https://youtu.be/Q_cxytZZdnc?si=OjOoJLPz7M25ilkc
 ## Deploy to AWS
 + https://aws.amazon.com/getting-started/hands-on/build-react-app-amplify-graphql/module-one/?e=gs2020&p=build-a-react-app-intro  
 
-## Webpack issue
-The issue is tied to the version of react-scripts you are using. v5 has an issue as it excludes support for some node features and polyfills that were available in lower versions.
-
-Your quick fix is to take react scripts down to v4 until a fix for v5 is in place unless you are comfortable with: 1) ejecting your app; 2) adding the webpack config changes that are needed. This link recaps the ongoing discussion of this topic.
-
-Issue Recap:
-+ https://stackoverflow.com/questions/68206050/breaking-change-webpack-5-used-to-include-polyfills-for-node-js-core-modules  
-+ https://stackoverflow.com/questions/70591567/module-not-found-error-cant-resolve-fs-in-react  
-+ https://github.com/facebook/create-react-app/issues/11756  
-
-TL:DR   react-scripts:5.0 $ webpack:5.72 don't play together
-Use react-scripts <5.0  until resolved.
-webpack config is here: node_modules/react-scripts/config/webpack.config.js
+## NPM commands
 
 + npm ls
 + npm view react-scripts versions

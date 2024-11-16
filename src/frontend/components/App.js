@@ -19,7 +19,7 @@ import Home from "./Home.js";
 import MyTokens from "./MyTokens.js"
 import MyResales from "./MyResales.js"
 
-// __ /contractData/files created when SC is deployed to blockchain __
+// __ /contractData/files created when Smart Contract is deployed to blockchain __
 import { ethers } from "ethers";
 import SmartContractAddress from '../contractsData/MidnightOwl-address.json';
 import SmartContractAbi from '../contractsData/MidnightOwl.json';

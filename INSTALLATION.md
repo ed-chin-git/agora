@@ -6,6 +6,7 @@ https://blog.suhailkakar.com/setup-and-build-your-first-web-3-application
 https://medium.com/building-blocks-on-the-chain/how-to-build-a-react-dapp-with-hardhat-and-metamask-9cec8f6410d3#7c9f  
 https://medium.com/coinsbench/building-a-dapp-using-truffle-and-react-with-ci-cd-integration-aa278a207247  
 https://youtu.be/Q_cxytZZdnc  
+https://youtu.be/Q_cxytZZdnc?si=OjOoJLPz7M25ilkc  
 
 ## Install linux dependencies
 - Install nvm   NodeJS version manager
@@ -41,19 +42,27 @@ https://youtu.be/Q_cxytZZdnc
     > $ npm install react-router-dom@6.3.0
 - Install Openzeppelin Smart Contract library
     > $ npm install @openzeppelin/contracts@4.5.0
+- Update legacy dependencies if hardhat node does not start
+    > $ npm update --legacy-peer-deps
 
 ## Launch a local blockchain node
 ### Hardhat 
-+ Start a local ethereum node for testing
++ Start a local ethereum node : cd to project directory (location of hardhat.config.js) and launch a hardhat node for testing
+    > $ cd dev/github/blockchain101/agora
+
     > $ npx hardhat node
+
 + Must be running a version of nodeJS supported by Hardhat
 + Smart Contracts/Tokens must be deployed to the blockchain using deploy.js before launching the application
+    > $ cd src\backend\scripts
+    
+    > $npm run deploy
 + Hardhat javascript console
     > $ npx hardhat console --network localhost
     >& const contract = 
 
 ## Smart Contract development workflow
-+ Modify smart contract code in Agora_contracts.sol
++ Modify smart contract code in src/contracts/main_contract.sol
 + If not already there, add smart contract to deploy.js . Location is commented.
 + Compile & deploy to executing hardhat process. (deploy.js)
     > $npm run deploy
@@ -99,46 +108,3 @@ webpack config is here: node_modules/react-scripts/config/webpack.config.js
 + npm uninstall react-scripts
 + npm install react-scripts@4.0.3
 
-## Downgrading react-scripts to 4.0.3  
-> MidnightOwl@0.1.0 start
-> react-scripts start
-
-
-There might be a problem with the project dependency tree.
-It is likely not a bug in Create React App, but something you need to fix locally.
-
-The react-scripts package provided by Create React App requires a dependency:
-
-  "webpack": "4.44.2"
-
-Don't try to install it manually: your package manager does it automatically.
-However, a different version of webpack was detected higher up in the tree:
-
-  /home/edc/dev/github/Agora/node_modules/webpack (version: 5.69.0) 
-
-Manually installing incompatible versions is known to cause hard-to-debug issues.
-
-If you would prefer to ignore this check, add SKIP_PREFLIGHT_CHECK=true to an .env file in your project.
-That will permanently disable this message but you might encounter other issues.
-
-To fix the dependency tree, try following the steps below in the exact order:
-
-  1. Delete package-lock.json (not package.json!) and/or yarn.lock in your project folder.
-  2. Delete node_modules in your project folder.
-  3. Remove "webpack" from dependencies and/or devDependencies in the package.json file in your project folder.
-  4. Run npm install or yarn, depending on the package manager you use.
-
-In most cases, this should be enough to fix the problem.
-If this has not helped, there are a few other things you can try:
-
-  5. If you used npm, install yarn (http://yarnpkg.com/) and repeat the above steps with it instead.
-     This may help because npm has known issues with package hoisting which may get resolved in future versions.
-
-  6. Check if /home/edc/dev/github/Agora/node_modules/webpack is outside your project directory.
-     For example, you might have accidentally installed something in your home folder.
-
-  7. Try running npm ls webpack in your project folder.
-     This will tell you which other package (apart from the expected react-scripts) installed webpack.
-
-If nothing else helps, add SKIP_PREFLIGHT_CHECK=true to an .env file in your project.
-That would permanently disable this preflight check in case you want to proceed anyway.

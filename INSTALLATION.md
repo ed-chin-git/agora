@@ -84,7 +84,7 @@ https://youtu.be/Q_cxytZZdnc?si=OjOoJLPz7M25ilkc
 + NFT.storage  : store NFT metadata in .car files. https://NFT.storage/new-file/
     * Create a new account and login to upload metadata files
     * Creates URI address accessed by smart contract code
-+ src/back/scripts/deploy.js contains the code for deploying the smart contract to the Hardhat blockchain node.
++ src/backend/scripts/deploy.js contains the code for deploying the smart contract to the Hardhat blockchain node.
 
 ## Deploy to AWS
 + https://aws.amazon.com/getting-started/hands-on/build-react-app-amplify-graphql/module-one/?e=gs2020&p=build-a-react-app-intro  

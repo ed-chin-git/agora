@@ -53,20 +53,20 @@ https://youtu.be/Q_cxytZZdnc?si=OjOoJLPz7M25ilkc
     > $ npx hardhat node
 
 + Must be running a version of nodeJS supported by Hardhat
-+ Smart Contracts/Tokens must be deployed to the blockchain using deploy.js before launching the application
++ Smart Contracts/Tokens must be deployed to the blockchain using deploy_smartcontract.js before launching the application
     > $ cd src\backend\scripts
     
-    > $ npm run deploy
+    > $ npm run deploy_smartcontract
 + Hardhat javascript console
     > $ npx hardhat console --network localhost  
 
 
 ## Smart Contract development workflow
 + Modify smart contract code in src/contracts/main_contract.sol
-+ If not already there, add smart contract to deploy.js . Location is commented.
-+ Compile & deploy to executing hardhat process. (deploy.js)
-    > $ npm run deploy
-+ src/back/scripts/deploy.js contains the code for deploying the smart contract to the Hardhat blockchain node.
++ If not already there, add smart contract to deploy_smartcontract.js . Location is commented.
++ Compile & deploy to executing hardhat process. (deploy_smartcontract.js)
+    > $ npm run deploy_smartcontract
++ src/back/scripts/deploy_smartcontract.js contains the code for deploying the smart contract to the Hardhat blockchain node.
 + deploys using first demo wallet account 
 + Note Smart contract address for next step
 + Verify deployment using hardhat console
@@ -74,6 +74,17 @@ https://youtu.be/Q_cxytZZdnc?si=OjOoJLPz7M25ilkc
   ~>const contract = await ethers.getContractAt(".sol contract name","smart contract address")
 + To deploy on Rinkeby testnet : https://www.scien.cx/2021/09/17/how-to-deploy-a-smart-contract-to-rinkeby-testnet-using-infura-and-hardhat/
 
+
+## Connect MetaMask to Hardhat 
+Select the “Add Network” button and you will be greeted with a form requesting for the relevant network details.   
+In order to connect to our local network, we will be using the following:
++ Network Name: localhost:8545 — This is up to you and defines how the network will show up in your network dropdown.
++ New RPC URL: http://127.0.0.1:8545 — The endpoint returned from running npx hardhat node earlier.
++ Chain ID: 1337 — This is the default chain identifier that is implemented by Hardhat. You can refer to their documentation here.
++ Currency Symbol: ETH — This is up to you and defines the symbol for the local network currency (ie. ETH).  
+### Import Hardhat Test Accounts into metamask
++ Select the hardhat network in metamask
++ add new accounts using private keys in the hardhat blockchain (keys are listed in terminal when node is started)
  
 ## Start the Application
 + NodeJS must be installed and running
@@ -84,15 +95,18 @@ https://youtu.be/Q_cxytZZdnc?si=OjOoJLPz7M25ilkc
 + NFT.storage  : store NFT metadata in .car files. https://NFT.storage/new-file/
     * Create a new account and login to upload metadata files
     * Creates URI address accessed by smart contract code
-+ src/backend/scripts/deploy.js contains the code for deploying the smart contract to the Hardhat blockchain node.
++ src/backend/scripts/deploy_smartcontract.js contains the code for deploying the smart contract to the Hardhat blockchain node.
 
 ## Deploy to AWS
 + https://aws.amazon.com/getting-started/hands-on/build-react-app-amplify-graphql/module-one/?e=gs2020&p=build-a-react-app-intro  
 
 ## NPM commands
-
 + npm ls
 + npm view react-scripts versions
 + npm uninstall react-scripts
 + npm install react-scripts@4.0.3
+
+## WSL commands (in Powershell)
++ wsl -l -v
++ wsl export <Distro> <filename>
 

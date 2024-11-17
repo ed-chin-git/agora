@@ -137,7 +137,7 @@ export default function MyTokens ({ contract }) {
                 </div>
             : (
                 <main style={{ padding: "1rem 0"}}>
-                    <h2>You don't own any songs yet!  Go to 'Buy Music' and check out what's for sale.</h2>
+                    <h2>You don't own any songs yet!  Go to 'Buy Music' and check out what is for sale.</h2>
                 </main>
             )}
         </div>

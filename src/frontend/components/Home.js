@@ -31,6 +31,7 @@ export default function Home ({ contract }) {
               };
             const identicon = `data:image/png;base64,${new Identicon(metadata.name + metadata.price, options).toString()}`
             metadata.audio = 'https://'+metadata.audio   // add prefix to complete url
+            
             // and return complete item
             let item_List = {
                 price: i.price,

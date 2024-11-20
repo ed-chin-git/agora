@@ -1,3 +1,8 @@
+# React 
+ [Official REACT Documentation](https://react.dev/)
+ 
+ [Learn REACT freecodecamp course](https://youtu.be/x4rFhThSX04?si=ACmtqdVUlkljH34w)  
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).

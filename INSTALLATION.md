@@ -107,6 +107,15 @@ In order to connect to our local network, we will be using the following:
 + npm install react-scripts@4.0.3
 
 ## WSL commands (in Powershell)
+### List installed Distros
 + wsl -l -v
-+ wsl export <Distro> <filename>
 
+### List valid Distros available for install
++ wsl -l -o
+
+### Backup a Distro (stored in D:\WSL_backups\ )
++ wsl --export <Distro_name> <backup_filename.vhdx> --vhdx     
+  i.e >  wsl --export Ubuntu Ubuntu_backup.vhdx --vhdx
+### Restore a Distro
++ wsl --import <new_Distro_name> <backup_filename.vhdx> --vhdx     
+  i.e >  wsl --import Ubuntu2 Ubuntu_backup.vhdx --vhdx

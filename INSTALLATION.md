@@ -1,12 +1,25 @@
-# Setup for WSL2 ( Ubuntu )
-## verify WSL2 is running
-## Install Ubuntu from MS Store
-## documentation
+# Agora :  Installation Documentation
+
+## Project documentation
 https://blog.suhailkakar.com/setup-and-build-your-first-web-3-application  
 https://medium.com/building-blocks-on-the-chain/how-to-build-a-react-dapp-with-hardhat-and-metamask-9cec8f6410d3#7c9f  
 https://medium.com/coinsbench/building-a-dapp-using-truffle-and-react-with-ci-cd-integration-aa278a207247  
 https://youtu.be/Q_cxytZZdnc  
 https://youtu.be/Q_cxytZZdnc?si=OjOoJLPz7M25ilkc  
+
+## Install Ubuntu Distro in WSL2 (for Windows users)
++ Install & verify Windows Subsystem for Linux 2 (WSL2)  
+    In Windows PowerShell terminal :  
+    >  PS C:\Users\user>WSL --version
++ Install Ubuntu from the MicroSoft Store app 
++ Open Ubuntu terminal and continue the installation  
+
+## Install Source code  
++ Create a project directory (mkdir)
++ Copy source files & sub-directories into project directory
++  .... OR ....
++ Clone project github repository  
+    > $ git clone https://github.com/ed-chin-git/agora.git  
 
 ## Install linux dependencies
 - Install nvm   NodeJS version manager
@@ -31,9 +44,6 @@ https://youtu.be/Q_cxytZZdnc?si=OjOoJLPz7M25ilkc
 
 - (if necessary) install and enable MetaMask chrome extension https://metamask.io
 
-- cd to project folder and clone this repo
-    > $ git clone https://github.com/ed-chin-git/agora.git
-
 - Install npm dependencies 
     > $ npm install
 - Install identicon.js
@@ -46,7 +56,7 @@ https://youtu.be/Q_cxytZZdnc?si=OjOoJLPz7M25ilkc
     > $ npm update --legacy-peer-deps
 
 ## Launch a local blockchain node
-### Hardhat 
+### using Hardhat 
 + Start a local ethereum node : cd to project directory (location of hardhat.config.js) and launch a hardhat node for testing
     > $ cd dev/github/blockchain101/agora
 
@@ -60,8 +70,26 @@ https://youtu.be/Q_cxytZZdnc?si=OjOoJLPz7M25ilkc
 + Hardhat javascript console
     > $ npx hardhat console --network localhost  
 
+## Connect MetaMask to Hardhat 
+Select the “Add Network” button and you will be greeted with a form requesting for the relevant network details.   
+In order to connect to our local network, we will be using the following:
++ Network Name: localhost:8545 — This is up to you and defines how the network will show up in your network dropdown.
++ New RPC URL: http://127.0.0.1:8545 — The endpoint returned from running npx hardhat node earlier.
++ Chain ID: 1337 — This is the default chain identifier that is implemented by Hardhat. Change in hardat.config.js
++ Currency Symbol: ETH — This is up to you and defines the symbol for the local network currency (ie. ETH).  
+### Import Hardhat Test Accounts into metamask
++ Select the hardhat network in metamask
++ add new accounts using private keys in the hardhat blockchain (keys are listed in terminal when node is started)  
 
-## Smart Contract development workflow
+## Using Remote TestNets  
+The application can be run using remote TestNets 
++ setup accounts on TestNet
++ deploy the solidity smartcontract to the TestNet
++ connect metamask to TestNet
++ start the app & launch in chrome browser
++ To deploy on Rinkeby testnet : https://www.scien.cx/2021/09/17/how-to-deploy-a-smart-contract-to-rinkeby-testnet-using-infura-and-hardhat/
+
+## Deploy Smart Contract on HardHat local blockchain node
 + Modify smart contract code in src/contracts/main_contract.sol
 + If not already there, add smart contract to deploy_smartcontract.js . Location is commented.
 + Compile & deploy to executing hardhat process. (deploy_smartcontract.js)
@@ -72,20 +100,8 @@ https://youtu.be/Q_cxytZZdnc?si=OjOoJLPz7M25ilkc
 + Verify deployment using hardhat console
   > $ npx hardhat console --network localhost  
   ~>const contract = await ethers.getContractAt(".sol contract name","smart contract address")
-+ To deploy on Rinkeby testnet : https://www.scien.cx/2021/09/17/how-to-deploy-a-smart-contract-to-rinkeby-testnet-using-infura-and-hardhat/
 
 
-## Connect MetaMask to Hardhat 
-Select the “Add Network” button and you will be greeted with a form requesting for the relevant network details.   
-In order to connect to our local network, we will be using the following:
-+ Network Name: localhost:8545 — This is up to you and defines how the network will show up in your network dropdown.
-+ New RPC URL: http://127.0.0.1:8545 — The endpoint returned from running npx hardhat node earlier.
-+ Chain ID: 1337 — This is the default chain identifier that is implemented by Hardhat. You can refer to their documentation here.
-+ Currency Symbol: ETH — This is up to you and defines the symbol for the local network currency (ie. ETH).  
-### Import Hardhat Test Accounts into metamask
-+ Select the hardhat network in metamask
-+ add new accounts using private keys in the hardhat blockchain (keys are listed in terminal when node is started)
- 
 ## Start the Application
 + NodeJS must be installed and running
 + From the application directory
@@ -100,13 +116,13 @@ In order to connect to our local network, we will be using the following:
 ## Deploy to AWS
 + https://aws.amazon.com/getting-started/hands-on/build-react-app-amplify-graphql/module-one/?e=gs2020&p=build-a-react-app-intro  
 
-## NPM commands
+## Common NPM commands
 + npm ls
 + npm view react-scripts versions
 + npm uninstall react-scripts
 + npm install react-scripts@4.0.3
 
-## WSL commands (in Powershell)
+## Common WSL commands (in Powershell)
 ### List installed Distros
 + wsl -l -v
 

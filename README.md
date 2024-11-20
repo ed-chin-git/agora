@@ -1,3 +1,4 @@
+
 # Agora
 A full-stack Dapp framework consisting of a React front-end running on NodeJS that interacts with a solidity smart contract deployed to an etherium-compatible blockchain.  
 ## Framework for Web3 Applications  
@@ -18,6 +19,8 @@ This sample application models an online marketplace where a user can connect a 
     + NFT.storage  : store NFT metadata in .car files. https://NFT.storage/new-file/
         * Create a new account and login to upload metadata files
         * Creates URI address accessed by smart contract code
+# INSTALLATION  
++  Read Here: [INSTALLATION.md](/INSTALLATION.md)
 # Development Workflow
 ## Launch a local blockchain node
 ### Hardhat 
